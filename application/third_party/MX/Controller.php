@@ -58,4 +58,30 @@ class MX_Controller
 	{
 		return CI::$APP->$class;
 	}
+    
+    protected function renderView($content, $only_content=false) {
+		if ($this->layout_type == 'classic')
+			$template = 'default/';
+		else
+			$template = 'mobile/';
+
+		$this->view->data($this->data);
+
+		$this->view_items = array();
+		if ($only_content) {
+			$this->view_items['content'] = $template.$content;
+		}
+		else {
+			$this->view->layout = $template.'_layout';
+			$this->view_items['header'] = $template .'_header';
+			$this->view_items['menu'] = $template.'_menu';
+			$this->view_items['notifikasi'] = $template.'_notifikasi';
+			$this->view_items['content']  = $template.$content;
+			$this->view_items['footer'] = $template.'_footer';
+		}
+
+		$this->view->load($this->view_items);
+		$this->view->render();
+	}
+
 }
